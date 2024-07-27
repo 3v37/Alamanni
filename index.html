@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html style="font-size: 16px;">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <title>Alamanni</title>
+  </head>
+  <body class="u-body u-xl-mode">
+    <h1>PATENTE:  MVA011</h1>
+    <h2>ASIENTO 1</h2>
+    <h3>Fecha oculta: <span id="fecha-actual"></span></h3>
+    
+
+    <script>
+        // Obtener la fecha actual
+        var hoy = new Date();
+        // Formatear la fecha como día/mes/año
+        var fecha = hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear();
+        // Insertar la fecha en el elemento con id 'fecha-actual'
+        document.getElementById('fecha-actual').textContent = fecha;
+    </script>
+  </body>
+</html>
