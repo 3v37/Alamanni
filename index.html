@@ -1,23 +1,60 @@
 <!DOCTYPE html>
-<html style="font-size: 16px;">
-  <head>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="utf-8">
-    <title>Alamanni</title>
-  </head>
-  <body class="u-body u-xl-mode">
-    <h1>PATENTE:  MVA011</h1>
-    <h2>ASIENTO 1</h2>
-    <h3>Fecha oculta: <span id="fecha-actual"></span></h3>
-    
+    <title>Datos del QR</title>
+    <script type="module">
+        // Importa las funciones necesarias de Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+        import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js";
 
-    <script>
-        // Obtener la fecha actual
-        var hoy = new Date();
-        // Formatear la fecha como día/mes/año
-        var fecha = hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear();
-        // Insertar la fecha en el elemento con id 'fecha-actual'
-        document.getElementById('fecha-actual').textContent = fecha;
+        // Configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDr8zY0fJoppe4b-RWItFvWiGWW_tgYvO4",
+            authDomain: "alamanni-traslados-fa9c5.firebaseapp.com",
+            databaseURL: "https://alamanni-traslados-fa9c5-default-rtdb.firebaseio.com",
+            projectId: "alamanni-traslados-fa9c5",
+            storageBucket: "alamanni-traslados-fa9c5.appspot.com",
+            messagingSenderId: "119290167074",
+            appId: "1:119290167074:web:5a8e5ae83e97f74e7cef7b",
+            measurementId: "G-5QWZD0F4PK"
+        };
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        async function leerDNI() {
+            const dbRef = ref(database, 'users'); // 'users' es el nodo donde se guardan los datos
+
+            try {
+                const snapshot = await get(dbRef);
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    const dniKeys = Object.keys(data); // Obtiene todas las claves de los DNI
+                    const DNI = dniKeys[0]; // Obtiene el DNI segun la posicion de la clave
+
+                    const dniInfo = data[DNI];
+                    document.getElementById('dni-info').innerHTML = `
+                        <p>DNI: ${DNI}</p>
+                        <p>Nombre: ${dniInfo.name}</p>
+                        <p>Detalle: ${dniInfo.detail}</p>
+                    `;
+                } else {
+                    console.log("No hay datos disponibles");
+                }
+            } catch (error) {
+                console.error("Error leyendo datos:", error);
+            }
+        }
+
+        // Ejecuta la función para leer el DNI
+        leerDNI();
     </script>
-  </body>
+</head>
+<body>
+    <h1>Datos del Pasajero</h1>
+    <div id="dni-info"></div>
+</body>
 </html>
